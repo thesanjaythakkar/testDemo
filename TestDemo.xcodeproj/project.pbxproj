@@ -8,14 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		1617ED6525F3E3B500AC043F /* TestDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1617ED6425F3E3B500AC043F /* TestDemoTests.swift */; };
+		1617ED7425F3EC3C00AC043F /* Users+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1617ED7225F3EC3C00AC043F /* Users+CoreDataClass.swift */; };
+		1617ED7525F3EC3C00AC043F /* Users+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1617ED7325F3EC3C00AC043F /* Users+CoreDataProperties.swift */; };
 		166C8FA025F28079000D3B88 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166C8F9F25F28079000D3B88 /* AppDelegate.swift */; };
 		166C8FA225F28079000D3B88 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166C8FA125F28079000D3B88 /* SceneDelegate.swift */; };
 		166C8FA725F28079000D3B88 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 166C8FA525F28079000D3B88 /* Main.storyboard */; };
 		166C8FAA25F28079000D3B88 /* TestDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 166C8FA825F28079000D3B88 /* TestDemo.xcdatamodeld */; };
 		166C8FAC25F2807D000D3B88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 166C8FAB25F2807D000D3B88 /* Assets.xcassets */; };
 		166C8FAF25F2807D000D3B88 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 166C8FAD25F2807D000D3B88 /* LaunchScreen.storyboard */; };
-		166C8FBF25F28123000D3B88 /* Users+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166C8FBD25F28123000D3B88 /* Users+CoreDataClass.swift */; };
-		166C8FC025F28123000D3B88 /* Users+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166C8FBE25F28123000D3B88 /* Users+CoreDataProperties.swift */; };
 		166C8FC725F28141000D3B88 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166C8FC425F28141000D3B88 /* NetworkManager.swift */; };
 		166C8FC825F28141000D3B88 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166C8FC525F28141000D3B88 /* APIManager.swift */; };
 		166C8FC925F28141000D3B88 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166C8FC625F28141000D3B88 /* Models.swift */; };
@@ -40,6 +40,8 @@
 		1617ED6225F3E3B500AC043F /* TestDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1617ED6425F3E3B500AC043F /* TestDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDemoTests.swift; sourceTree = "<group>"; };
 		1617ED6625F3E3B500AC043F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1617ED7225F3EC3C00AC043F /* Users+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Users+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1617ED7325F3EC3C00AC043F /* Users+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Users+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		166C8F9C25F28079000D3B88 /* TestDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		166C8F9F25F28079000D3B88 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		166C8FA125F28079000D3B88 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -48,8 +50,6 @@
 		166C8FAB25F2807D000D3B88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		166C8FAE25F2807D000D3B88 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		166C8FB025F2807D000D3B88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		166C8FBD25F28123000D3B88 /* Users+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Users+CoreDataClass.swift"; sourceTree = "<group>"; };
-		166C8FBE25F28123000D3B88 /* Users+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Users+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		166C8FC425F28141000D3B88 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		166C8FC525F28141000D3B88 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		166C8FC625F28141000D3B88 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -125,11 +125,11 @@
 		166C8FBC25F28123000D3B88 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				1617ED7225F3EC3C00AC043F /* Users+CoreDataClass.swift */,
+				1617ED7325F3EC3C00AC043F /* Users+CoreDataProperties.swift */,
 				166C8FCB25F28154000D3B88 /* CoreDataStack.swift */,
 				166C8FCC25F28154000D3B88 /* DataProvider.swift */,
 				166C8FA825F28079000D3B88 /* TestDemo.xcdatamodeld */,
-				166C8FBD25F28123000D3B88 /* Users+CoreDataClass.swift */,
-				166C8FBE25F28123000D3B88 /* Users+CoreDataProperties.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -287,8 +287,9 @@
 			files = (
 				166C8FD625F2816A000D3B88 /* ProfileVC.swift in Sources */,
 				166C8FD725F2816A000D3B88 /* UserCell.swift in Sources */,
+				1617ED7425F3EC3C00AC043F /* Users+CoreDataClass.swift in Sources */,
+				1617ED7525F3EC3C00AC043F /* Users+CoreDataProperties.swift in Sources */,
 				166C8FC825F28141000D3B88 /* APIManager.swift in Sources */,
-				166C8FBF25F28123000D3B88 /* Users+CoreDataClass.swift in Sources */,
 				166C8FA025F28079000D3B88 /* AppDelegate.swift in Sources */,
 				166C8FC725F28141000D3B88 /* NetworkManager.swift in Sources */,
 				166C8FD825F2816A000D3B88 /* UserListVC.swift in Sources */,
@@ -296,7 +297,6 @@
 				166C8FCD25F28154000D3B88 /* CoreDataStack.swift in Sources */,
 				166C8FAA25F28079000D3B88 /* TestDemo.xcdatamodeld in Sources */,
 				166C8FC925F28141000D3B88 /* Models.swift in Sources */,
-				166C8FC025F28123000D3B88 /* Users+CoreDataProperties.swift in Sources */,
 				166C8FA225F28079000D3B88 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

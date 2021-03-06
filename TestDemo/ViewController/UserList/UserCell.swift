@@ -28,6 +28,18 @@ class UserCell: UITableViewCell {
     var user: Users!
     {
         didSet {
+            self.backgroundColor = UIColor { [self] options in
+
+                switch options.userInterfaceStyle
+                {
+                case .dark:
+                    return user.seens ? UIColor.darkGray : UIColor.black
+                case .light:
+                    return user.seens ? UIColor.tertiarySystemGroupedBackground : UIColor.white
+                default:
+                    return UIColor.white
+                }
+            }
             imgProfile.loadImageUsingCache(withUrl: user.avatar_url ?? "")
             lblName.text = user.login
             if let company = user.company,company.count > 0

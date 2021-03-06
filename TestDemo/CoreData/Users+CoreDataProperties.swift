@@ -2,7 +2,7 @@
 //  Users+CoreDataProperties.swift
 //  TestDemo
 //
-//  Created by Sanjay Thakkar on 05/03/21.
+//  Created by Sanjay Thakkar on 06/03/21.
 //
 //
 
@@ -25,6 +25,7 @@ extension Users {
     @NSManaged public var login: String?
     @NSManaged public var name: String?
     @NSManaged public var note: String?
+    @NSManaged public var seens: Bool
     
     func update(with user: ShortUserObject) throws {
 

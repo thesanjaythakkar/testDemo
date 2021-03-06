@@ -10,8 +10,9 @@
         <attribute name="login" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="note" optional="YES" attributeType="String"/>
+        <attribute name="seens" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="Users" positionX="-63" positionY="-18" width="128" height="178"/>
+        <element name="Users" positionX="-63" positionY="-18" width="128" height="193"/>
     </elements>
 </model>
