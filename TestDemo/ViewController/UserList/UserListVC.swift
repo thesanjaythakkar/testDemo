@@ -15,7 +15,7 @@ class UserListVC: UITableViewController {
 
     //MARK:- Variables
    
-    var dataProvider: DataProvider = DataProvider(persistentContainer: CoreDataStack.shared.persistentContainer, repository: APIManager.shared)
+    var dataProvider: DataProvider = DataProvider(persistentContainer: CoreDataStack.shared.persistentContainer, repository: APIDataManager.shared)
 
     lazy var fetchedResultsController: NSFetchedResultsController<Users> = {
         let fetchRequest = NSFetchRequest<Users>(entityName: "Users")
@@ -116,6 +116,7 @@ class UserListVC: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as! UserCell
+        cell.isInverted = (indexPath.row + 1) % 4 == 0
         if isFiltering
         {
             cell.user = filteredCandies[indexPath.row]
@@ -124,7 +125,6 @@ class UserListVC: UITableViewController {
         {
             cell.user = (fetchedResultsController.sections?[0].objects as! [Users])[indexPath.row]
         }
-        cell.isInverted = (indexPath.row + 1) % 4 == 0
         return cell
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -157,23 +157,31 @@ class UserListVC: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let user = isFiltering ? filteredCandies[indexPath.row] : (fetchedResultsController.sections![0].objects as! [Users])[indexPath.row]
-        setLoadingScreen()
-        dataProvider.fetchUserDetails(userName: user.login!) { (err) in
-            DispatchQueue.main.async {
-                self.removeLoadingScreen()
-                if let err = err
-                {
-                    print(err)
-                }
-                else
-                {
-                    let provided = self.dataProvider.getUser(id: Int(user.id))
-                    self.performSegue(withIdentifier: "showProfile", sender: provided)
+       
+        if user.name != nil
+        {
+            self.performSegue(withIdentifier: "showProfile", sender: user)
+        }
+        else{
+            setLoadingScreen()
+            dataProvider.fetchUserDetails(userName: user.login!) { (err) in
+                DispatchQueue.main.async {
+                    self.removeLoadingScreen()
+                    if let err = err
+                    {
+                        print(err)
+                    }
+                    else
+                    {
+                        //let provided = self.dataProvider.getUser(id: Int(user.id))
+                        self.performSegue(withIdentifier: "showProfile", sender: user)
+                    }
+
                 }
 
             }
-
         }
+        
     }
     //MARK:- Navigation
 
@@ -182,7 +190,6 @@ class UserListVC: UITableViewController {
         {
             let controller = segue.destination as! ProfileVC
             controller.user = sender as? Users
-            controller.context = dataProvider.viewContext
         }
     }
     //MARK:- Filter
@@ -232,6 +239,9 @@ extension UserListVC: NSFetchedResultsControllerDelegate {
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         self.tableView.tableFooterView?.isHidden = true
+        tableView.reloadData()
+    }
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.reloadData()
     }
 }

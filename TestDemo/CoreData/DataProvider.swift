@@ -8,16 +8,17 @@
 import Foundation
 import CoreData
 
+
 class DataProvider {
 
     private let persistentContainer: NSPersistentContainer
-    private let repository: APIManager
+    private let repository: APIDataManager
 
     var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
 
-    init(persistentContainer: NSPersistentContainer, repository: APIManager) {
+    init(persistentContainer: NSPersistentContainer, repository: APIDataManager) {
         self.persistentContainer = persistentContainer
         self.repository = repository
     }
@@ -39,8 +40,13 @@ class DataProvider {
             taskContext.undoManager = nil
 
             _ = self.syncUsers(users: userList, taskContext: taskContext)
-
+            do {
+                try self.viewContext.save()
+            } catch {
+                print("Error: \(error)\nCould not save Core Data context.")
+            }
             completion(nil)
+            
         }
     }
     func fetchUserDetails(userName:String, completion: @escaping (Error?)->Void)  {
@@ -58,6 +64,11 @@ class DataProvider {
             taskContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
             taskContext.undoManager = nil
            _ = self.syncProfile(profile: userObject, taskContext: taskContext)
+            do {
+                try self.viewContext.save()
+            } catch {
+                print("Error: \(error)\nCould not save Core Data context.")
+            }
             completion(nil)
         }
     }
@@ -131,9 +142,41 @@ class DataProvider {
                 taskContext.reset() // Reset the context to clean up the cache and low the memory footprint.
             }
             successfull = true
-        
         }
         return successfull
+    }
+     func saveUser(user:Users, seen:Bool? = nil, note:String? = nil, completion:(Bool)->Void)
+    {
+        var successfull = false
+        let taskContext = self.persistentContainer.newBackgroundContext()
+        taskContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        taskContext.undoManager = nil
+        taskContext.performAndWait {
+            if let seen = seen
+            {
+                user.update(with: seen)
+            }
+            if let note = note
+            {
+                user.update(with: note)
+            }
+            
+            if taskContext.hasChanges {
+                do {
+                    try taskContext.save()
+                } catch {
+                    print("Error: \(error)\nCould not save Core Data context.")
+                }
+                taskContext.reset() // Reset the context to clean up the cache and low the memory footprint.
+            }
+            successfull = true
+        }
+        do {
+            try self.viewContext.save()
+        } catch {
+            print("Error: \(error)\nCould not save Core Data context.")
+        }
+        completion(successfull)
     }
     func getUser(id:Int) -> Users? {
         let matchingUserRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
@@ -141,7 +184,14 @@ class DataProvider {
         var updatingUsers:[Users]!
         do {
             updatingUsers = try viewContext.fetch(matchingUserRequest) as? [Users]
-            return updatingUsers.first!
+            if let user = updatingUsers.first
+            {
+                return user
+            }
+            else{
+                return nil
+            }
+            
         }
         catch
         {

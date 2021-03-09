@@ -40,9 +40,9 @@ class UserCell: UITableViewCell {
                     return UIColor.white
                 }
             }
-            imgProfile.loadImageUsingCache(withUrl: user.avatar_url ?? "")
+            imgProfile.loadImageUsingCache(isInverted: isInverted, withUrl: user.avatar_url ?? "")
             lblName.text = user.login
-            if let company = user.company,company.count > 0
+            if let company = user.company, company.count > 0
             {
                 lblDetails.text = company
                 lblDetails.isHidden = false
@@ -57,14 +57,14 @@ class UserCell: UITableViewCell {
     var isInverted: Bool = false
     {
         didSet {
-            vwImageContainer.backgroundColor = UIColor { [self] options in
+            vwImageContainer.backgroundColor = UIColor { options in
 
                 switch options.userInterfaceStyle
                 {
                 case .dark:
-                    return isInverted ? UIColor.white : UIColor.gray
+                    return UIColor.gray
                 case .light:
-                    return isInverted ? UIColor.black : UIColor.lightGray
+                    return UIColor.lightGray
                 default:
                     return UIColor.brown
                 }
@@ -88,7 +88,7 @@ class UserCell: UITableViewCell {
 let imageCache = NSCache<NSString, AnyObject>()
 
 extension UIImageView {
-    func loadImageUsingCache(withUrl urlString: String) {
+    func loadImageUsingCache(isInverted: Bool = false, withUrl urlString: String) {
         let url = URL(string: urlString)
         self.image = nil
 
@@ -97,7 +97,6 @@ extension UIImageView {
             self.image = cachedImage
             return
         }
-
         // if not, download image from url
         URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
             if error != nil {
@@ -107,11 +106,28 @@ extension UIImageView {
 
             DispatchQueue.main.async {
                 if let image = UIImage(data: data!) {
-                    imageCache.setObject(image, forKey: urlString as NSString)
                     self.image = image
+                    if isInverted
+                    {
+                        self.invertImage()
+                    }
+                    imageCache.setObject(self.image!, forKey: urlString as NSString)
                 }
             }
 
         }).resume()
     }
+    func invertImage()
+    {
+        if let filter = CIFilter(name: "CIColorInvert") {
+            let coreImage = CIImage(image: self.image!)
+            filter.setValue(coreImage, forKey: kCIInputImageKey)
+            if let output = filter.outputImage
+            {
+                let newImage = UIImage(ciImage: output)
+                self.image = newImage
+            }
+        }
+    }
+
 }

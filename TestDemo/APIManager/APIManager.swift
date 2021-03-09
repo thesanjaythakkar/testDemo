@@ -7,31 +7,76 @@
 
 import Foundation
 
-class APIManager {
+
+
+class ConcurrentOperation: Operation {
+
+    typealias OperationCompletionHandler = (Data?,Error?)->()
+
+    var completionHandler: OperationCompletionHandler?
     
-    private init() {}
-    static let shared = APIManager()
+    func complete(data:Data?, error:Error?)
+    {
+        completionHandler!(data,error)
+    }
+
+}
+class APIManager:ConcurrentOperation {
     
+    
+    //static let shared = APIManager()
+    private let url:URL!
+     init(url:URL) {
+        self.url = url
+    }
     private let urlSession = URLSession.shared
-    private let baseURL = "https://api.github.com/"
-    func callAPIFor<T:Decodable>(url:URL, responseType:T.Type, completion:@escaping(T?,Error?)->())
+    
+    override func main()
     {
         urlSession.dataTask(with: url) { (data, response, error) in
             if let error = error {
-                completion(nil, error)
+                self.complete(data: nil, error: error)
                 return
             }
             guard let data = data else {
-                completion(nil, error)
+                self.complete(data: nil, error: error)
                 return
             }
-            do {
-                completion(try JSONDecoder().decode(responseType.self, from: data), nil)
-            } catch {
-                completion(nil, error)
-            }
+            
+            self.complete(data: data, error: nil)
         }.resume()
     }
+   
+    
+}
+class QueueManager {
+    
+    lazy var queue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue;
+    }()
+
+    // MARK: - Singleton
+    
+    static let shared = QueueManager()
+    
+    // MARK: - Addition
+    
+    func enqueue(_ operation: Operation) {
+        queue.addOperation(operation)
+    }
+}
+class APIDataManager {
+    
+    private let queueManager = QueueManager.shared
+    
+    // MARK: - Init
+    private let baseURL = "https://api.github.com/"
+    
+    static let shared = APIDataManager()
+    
+    // MARK: - Retrieval
     func getUsers(id:Int, completion: @escaping(_ users: [ShortUserObject]?,_ error: Error?) -> ()) {
         let usersURL = baseURL + "users?since=" + String(id)
         if !NetworkManager.shared.currentReachableStatus
@@ -39,9 +84,18 @@ class APIManager {
             completion([],nil)
         }
         else{
-            callAPIFor(url: URL(string: usersURL)!, responseType: [ShortUserObject].self) { (response, err) in
-                completion(response, err)
+            let operation = APIManager.init(url: URL(string: usersURL)!)
+            operation.completionHandler = { data, error in
+                if let data = data
+                {
+                    completion(try! JSONDecoder().decode([ShortUserObject].self, from: data), nil)
+                }
+                else
+                {
+                    completion(nil, error)
+                }
             }
+            self.queueManager.enqueue(operation)
         }
        
     }
@@ -53,11 +107,19 @@ class APIManager {
         }
         else{
             let profileURL = baseURL + "users/" + userName
-            callAPIFor(url: URL(string: profileURL)!, responseType: ProfileObject.self) { (response, err) in
-                completion(response, err)
+            
+            let operation = APIManager.init(url: URL(string: profileURL)!)
+            operation.completionHandler = { data, error in
+                if let data = data
+                {
+                    completion(try! JSONDecoder().decode(ProfileObject.self, from: data), nil)
+                }
+                else
+                {
+                    completion(nil, error)
+                }
             }
+            self.queueManager.enqueue(operation)
         }
-        
     }
-    
 }

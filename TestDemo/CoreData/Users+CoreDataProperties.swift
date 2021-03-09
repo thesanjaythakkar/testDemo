@@ -44,6 +44,14 @@ extension Users {
         self.following = Int64(user.following ?? 0)
         self.name = user.name
     }
+    func update(with isSeen:Bool)
+    {
+        self.seens = isSeen
+    }
+    func update(with note:String)
+    {
+        self.note = note
+    }
 }
 
 extension Users : Identifiable {
