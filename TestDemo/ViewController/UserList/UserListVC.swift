@@ -116,7 +116,7 @@ class UserListVC: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as! UserCell
-        cell.isInverted = (indexPath.row + 1) % 4 == 0
+        cell.isInvertedColor = (indexPath.row + 1) % 4 == 0
         if isFiltering
         {
             cell.user = filteredCandies[indexPath.row]

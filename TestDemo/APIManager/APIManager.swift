@@ -24,7 +24,6 @@ class ConcurrentOperation: Operation {
 class APIManager:ConcurrentOperation {
     
     
-    //static let shared = APIManager()
     private let url:URL!
      init(url:URL) {
         self.url = url

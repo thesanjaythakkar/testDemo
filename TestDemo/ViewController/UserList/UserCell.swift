@@ -40,7 +40,7 @@ class UserCell: UITableViewCell {
                     return UIColor.white
                 }
             }
-            imgProfile.loadImageUsingCache(isInverted: isInverted, withUrl: user.avatar_url ?? "")
+            imgProfile.loadImageUsingCache(isInverted: isInvertedColor, withUrl: user.avatar_url ?? "")
             lblName.text = user.login
             if let company = user.company, company.count > 0
             {
@@ -54,7 +54,7 @@ class UserCell: UITableViewCell {
             btnNote.isHidden = user.note == nil || user.note == ""
         }
     }
-    var isInverted: Bool = false
+    var isInvertedColor: Bool = false
     {
         didSet {
             vwImageContainer.backgroundColor = UIColor { options in
@@ -85,7 +85,8 @@ class UserCell: UITableViewCell {
         // Configure the view for the selected state
     }
 }
-let imageCache = NSCache<NSString, AnyObject>()
+
+let imageCache = NSCache<NSString, UIImage>()
 
 extension UIImageView {
     func loadImageUsingCache(isInverted: Bool = false, withUrl urlString: String) {
@@ -93,10 +94,11 @@ extension UIImageView {
         self.image = nil
 
         // check cached image
-        if let cachedImage = imageCache.object(forKey: urlString as NSString) as? UIImage {
-            self.image = cachedImage
-            return
-        }
+        if let cachedImage = imageCache.object(forKey: urlString as NSString) {
+            DispatchQueue.main.async {
+                self.image = cachedImage
+            }
+        } else {
         // if not, download image from url
         URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
             if error != nil {
@@ -106,28 +108,35 @@ extension UIImageView {
 
             DispatchQueue.main.async {
                 if let image = UIImage(data: data!) {
-                    self.image = image
-                    if isInverted
-                    {
-                        self.invertImage()
-                    }
+                    self.image = isInverted ? image.invertImage() : image
                     imageCache.setObject(self.image!, forKey: urlString as NSString)
                 }
             }
 
         }).resume()
+        }
     }
-    func invertImage()
+    
+
+}
+
+extension UIImage
+{
+    func invertImage() -> UIImage
     {
         if let filter = CIFilter(name: "CIColorInvert") {
-            let coreImage = CIImage(image: self.image!)
+            let coreImage = CIImage(image: self)
             filter.setValue(coreImage, forKey: kCIInputImageKey)
             if let output = filter.outputImage
             {
-                let newImage = UIImage(ciImage: output)
-                self.image = newImage
+                print("converted to invert")
+                return UIImage(cgImage: CIContext.init().createCGImage(output, from: output.extent)!)
+            } else {
+                return self
             }
+        } else {
+            print("Not able to convert")
+            return self
         }
     }
-
 }
