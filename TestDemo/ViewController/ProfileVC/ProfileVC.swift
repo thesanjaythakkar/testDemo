@@ -33,8 +33,8 @@ class ProfileVC: UIViewController {
     func setupView()
     {
 
-        dataProvider.saveUser(user: user, seen: true) { (isDone) in
-            print("\(isDone ? "Successfully saved" : "not saved")")
+        dataProvider.saveUser(user: user, seen: true) { _ in
+            
         }
         self.title = user.login
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)

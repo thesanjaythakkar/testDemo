@@ -34,6 +34,7 @@ class UserListVC: UITableViewController {
 
         do {
             try controller.performFetch()
+            viewModel.items.value = controller.sections![0].objects as! [Users]
         } catch {
             let nserror = error as NSError
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
@@ -42,7 +43,7 @@ class UserListVC: UITableViewController {
     }()
 
     let searchController = UISearchController(searchResultsController: nil)
-    var filteredCandies: [Users] = []
+    //var filteredCandies: [Users] = []
     var searchString: String?
     var isSearchBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
@@ -54,7 +55,7 @@ class UserListVC: UITableViewController {
             (!isSearchBarEmpty || searchBarScopeIsFiltering)
     }
 
-
+    let viewModel = UserViewModel()
     let loadingView = UIView()
 
     let spinner = UIActivityIndicatorView()
@@ -68,11 +69,20 @@ class UserListVC: UITableViewController {
         super.viewDidLoad()
 
         setupViews()
-
+        bindVM()
        
 
 
         // Do any additional setup after loading the view.
+    }
+    func bindVM()
+    {
+        viewModel.items.addObserver(fireNow: false) { users in
+            self.tableView.reloadData()
+        }
+        viewModel.filteredItems.addObserver(fireNow: false) { users in
+           self.tableView.reloadData()
+        }
     }
     func setupViews()
     {
@@ -112,18 +122,18 @@ class UserListVC: UITableViewController {
     //MARK:- Table Datasource & Delegates
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isFiltering ? filteredCandies.count : fetchedResultsController.sections?[0].numberOfObjects ?? 0
+        return isFiltering ? viewModel.filteredItems.value.count : viewModel.items.value.count
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as! UserCell
         cell.isInvertedColor = (indexPath.row + 1) % 4 == 0
         if isFiltering
         {
-            cell.user = filteredCandies[indexPath.row]
+            cell.user = viewModel.filteredItems.value[indexPath.row]
         }
         else
         {
-            cell.user = (fetchedResultsController.sections?[0].objects as! [Users])[indexPath.row]
+            cell.user = viewModel.items.value[indexPath.row]
         }
         return cell
     }
@@ -134,7 +144,6 @@ class UserListVC: UITableViewController {
 
         if !isFiltering
         {
-
             let lastSectionIndex = tableView.numberOfSections - 1
             let lastRowIndex = tableView.numberOfRows(inSection: lastSectionIndex) - 1
             if indexPath.section == lastSectionIndex && indexPath.row == lastRowIndex {
@@ -156,7 +165,7 @@ class UserListVC: UITableViewController {
         }
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let user = isFiltering ? filteredCandies[indexPath.row] : (fetchedResultsController.sections![0].objects as! [Users])[indexPath.row]
+        let user = isFiltering ? viewModel.filteredItems.value[indexPath.row] : viewModel.items.value[indexPath.row]
        
         if user.name != nil
         {
@@ -196,7 +205,7 @@ class UserListVC: UITableViewController {
     func filterContentForSearchText(searchString: String)
     {
         let filter = fetchedResultsController.sections![0].objects as! [Users]
-        filteredCandies = filter.filter { (obj) -> Bool in
+        viewModel.filteredItems.value = filter.filter { (obj) -> Bool in
             return obj.login!.lowercased().contains(searchString.lowercased())
         }
         tableView.reloadData()
@@ -239,11 +248,15 @@ extension UserListVC: NSFetchedResultsControllerDelegate {
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         self.tableView.tableFooterView?.isHidden = true
-        tableView.reloadData()
+        if type == .update
+        {
+            viewModel.items.value[indexPath!.row] = controller.sections![0].objects![indexPath!.row] as! Users
+        }
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.reloadData()
+        viewModel.items.value = controller.sections![0].objects as! [Users]
     }
+    
 }
 
 extension UserListVC: UISearchResultsUpdating {

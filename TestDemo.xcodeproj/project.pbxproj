@@ -24,6 +24,11 @@
 		166C8FD625F2816A000D3B88 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166C8FD225F2816A000D3B88 /* ProfileVC.swift */; };
 		166C8FD725F2816A000D3B88 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166C8FD425F2816A000D3B88 /* UserCell.swift */; };
 		166C8FD825F2816A000D3B88 /* UserListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166C8FD525F2816A000D3B88 /* UserListVC.swift */; };
+		16A8A99B27C4DD3300EF3B6F /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A8A99A27C4DD3300EF3B6F /* UserViewModel.swift */; };
+		16A8A99E27C4EAD300EF3B6F /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A8A99D27C4EAD200EF3B6F /* Observable.swift */; };
+		16A8A9A027C4F0FE00EF3B6F /* NormalUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A8A99F27C4F0FE00EF3B6F /* NormalUserCell.swift */; };
+		16A8A9A227C4F12B00EF3B6F /* NoteUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A8A9A127C4F12B00EF3B6F /* NoteUserCell.swift */; };
+		16A8A9A427C4F13D00EF3B6F /* InvertedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A8A9A327C4F13D00EF3B6F /* InvertedUserCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +63,11 @@
 		166C8FD225F2816A000D3B88 /* ProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		166C8FD425F2816A000D3B88 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		166C8FD525F2816A000D3B88 /* UserListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListVC.swift; sourceTree = "<group>"; };
+		16A8A99A27C4DD3300EF3B6F /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		16A8A99D27C4EAD200EF3B6F /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		16A8A99F27C4F0FE00EF3B6F /* NormalUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalUserCell.swift; sourceTree = "<group>"; };
+		16A8A9A127C4F12B00EF3B6F /* NoteUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteUserCell.swift; sourceTree = "<group>"; };
+		16A8A9A327C4F13D00EF3B6F /* InvertedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvertedUserCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +118,7 @@
 		166C8F9E25F28079000D3B88 /* TestDemo */ = {
 			isa = PBXGroup;
 			children = (
+				16A8A99C27C4EABA00EF3B6F /* Helper */,
 				166C8FD025F2816A000D3B88 /* ViewController */,
 				166C8FC325F28141000D3B88 /* APIManager */,
 				166C8FBC25F28123000D3B88 /* CoreData */,
@@ -147,6 +158,7 @@
 		166C8FD025F2816A000D3B88 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				16A8A99927C4DCFB00EF3B6F /* UserViewModel */,
 				166C8FD125F2816A000D3B88 /* ProfileVC */,
 				166C8FD325F2816A000D3B88 /* UserList */,
 			);
@@ -165,6 +177,9 @@
 			isa = PBXGroup;
 			children = (
 				166C8FD425F2816A000D3B88 /* UserCell.swift */,
+				16A8A99F27C4F0FE00EF3B6F /* NormalUserCell.swift */,
+				16A8A9A127C4F12B00EF3B6F /* NoteUserCell.swift */,
+				16A8A9A327C4F13D00EF3B6F /* InvertedUserCell.swift */,
 				166C8FD525F2816A000D3B88 /* UserListVC.swift */,
 			);
 			path = UserList;
@@ -175,6 +190,22 @@
 			children = (
 			);
 			path = SupportFiles;
+			sourceTree = "<group>";
+		};
+		16A8A99927C4DCFB00EF3B6F /* UserViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				16A8A99A27C4DD3300EF3B6F /* UserViewModel.swift */,
+			);
+			path = UserViewModel;
+			sourceTree = "<group>";
+		};
+		16A8A99C27C4EABA00EF3B6F /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				16A8A99D27C4EAD200EF3B6F /* Observable.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,12 +317,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				166C8FD625F2816A000D3B88 /* ProfileVC.swift in Sources */,
+				16A8A99E27C4EAD300EF3B6F /* Observable.swift in Sources */,
 				166C8FD725F2816A000D3B88 /* UserCell.swift in Sources */,
+				16A8A9A427C4F13D00EF3B6F /* InvertedUserCell.swift in Sources */,
 				1617ED7425F3EC3C00AC043F /* Users+CoreDataClass.swift in Sources */,
 				1617ED7525F3EC3C00AC043F /* Users+CoreDataProperties.swift in Sources */,
 				166C8FC825F28141000D3B88 /* APIManager.swift in Sources */,
+				16A8A99B27C4DD3300EF3B6F /* UserViewModel.swift in Sources */,
+				16A8A9A027C4F0FE00EF3B6F /* NormalUserCell.swift in Sources */,
 				166C8FA025F28079000D3B88 /* AppDelegate.swift in Sources */,
 				166C8FC725F28141000D3B88 /* NetworkManager.swift in Sources */,
+				16A8A9A227C4F12B00EF3B6F /* NoteUserCell.swift in Sources */,
 				166C8FD825F2816A000D3B88 /* UserListVC.swift in Sources */,
 				166C8FCE25F28154000D3B88 /* DataProvider.swift in Sources */,
 				166C8FCD25F28154000D3B88 /* CoreDataStack.swift in Sources */,

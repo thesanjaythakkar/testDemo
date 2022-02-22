@@ -86,7 +86,12 @@ class UserCell: UITableViewCell {
     }
 }
 
-let imageCache = NSCache<NSString, UIImage>()
+var imageCache:NSCache<NSString, UIImage> = {
+    var cache = NSCache<NSString, UIImage>()
+    cache.totalCostLimit = 200 * 1024 * 1024
+    cache.countLimit = 300
+    return cache
+}()
 
 extension UIImageView {
     func loadImageUsingCache(isInverted: Bool = false, withUrl urlString: String) {
@@ -129,7 +134,6 @@ extension UIImage
             filter.setValue(coreImage, forKey: kCIInputImageKey)
             if let output = filter.outputImage
             {
-                print("converted to invert")
                 return UIImage(cgImage: CIContext.init().createCGImage(output, from: output.extent)!)
             } else {
                 return self
